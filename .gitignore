@@ -1,0 +1,22 @@
+# CMake
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
+install_manifest.txt
+
+# Build/target folders
+build/
+dist/
+
+# Generated headers
+config.h
+java/jni/jrrd2/include/interface.h
+jni/include/jrrd2_java_interface.h
+
+# Editors
+.idea
+.settings
+.classpath
+.project
+java/bin/

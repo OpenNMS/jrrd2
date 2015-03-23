@@ -1,0 +1,106 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.opennms</groupId>
+  <artifactId>jrrd2-api</artifactId>
+  <version>2.0.0-SNAPSHOT</version>
+  
+  <properties>
+    <jdk.version>1.7</jdk.version>
+  </properties>
+
+  <build>
+    <plugins>
+        <!-- download source code in Eclipse -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-eclipse-plugin</artifactId>
+            <version>2.9</version>
+            <configuration>
+                <downloadSources>true</downloadSources>
+                <downloadJavadocs>false</downloadJavadocs>
+            </configuration>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>2.3.2</version>
+            <configuration>
+                <source>${jdk.version}</source>
+                <target>${jdk.version}</target>
+            </configuration>
+        </plugin>
+        <plugin>
+            <groupId>com.alexkasko.maven</groupId>
+            <artifactId>jni-headers-maven-plugin</artifactId>
+            <version>1.0.6</version>
+            <executions>
+                <!-- generate headers for native methods -->
+                <execution>
+                    <id>javah</id>
+                    <phase>compile</phase>
+                    <goals>
+                        <goal>javah</goal>
+                    </goals>
+                    <configuration>
+                        <javahClass>org.opennms.netmgt.rrd.jrrd2.Interface</javahClass>
+                        <javahOutputFilePath>${project.basedir}/../jni/include/jrrd2_java_interface.h</javahOutputFilePath>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+        <!-- Make this jar executable -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>2.5</version>
+            <configuration>
+              <archive>
+                <manifest>
+                    <!-- Jar file entry point -->
+                    <mainClass>org.opennms.netmgt.rrd.jrrd2.Interface</mainClass>
+                </manifest>
+              </archive>
+              <outputDirectory>${project.basedir}/../dist/</outputDirectory>
+              <finalName>jrrd2</finalName>
+            </configuration>
+        </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+      <dependency>
+        <groupId>org.opennms</groupId>
+        <artifactId>opennms-rrdtool-api</artifactId>
+        <version>14.0.3</version>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.12</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.hamcrest</groupId>
+        <artifactId>hamcrest-all</artifactId>
+        <version>1.3</version>
+        <scope>test</scope>
+      </dependency>
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <snapshots><enabled>false</enabled></snapshots>
+      <releases><enabled>true</enabled></releases>
+      <id>opennms-repo</id>
+      <name>OpenNMS Repository</name>
+      <url>http://maven.opennms.org/content/groups/opennms.org-release</url>
+    </repository>
+    <repository>
+      <snapshots><enabled>true</enabled></snapshots>
+      <releases><enabled>false</enabled></releases>
+      <id>opennms-snapshots</id>
+      <name>OpenNMS Snapshot Maven Repository</name>
+      <url>http://maven.opennms.org/content/groups/opennms.org-snapshot</url>
+    </repository>
+  </repositories>
+</project>
