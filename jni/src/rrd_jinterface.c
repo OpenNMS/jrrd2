@@ -99,13 +99,13 @@ int findClasses(JNIEnv *env, Classes* classes) {
 	return 0;
 }
 
-inline time_t jlong_to_time_t(jlong timestamp) {
+static inline time_t jlong_to_time_t(jlong timestamp) {
 	// WARNING: This may cause problems on some architectures.
-	// Failures should be detected by the unit suite.
+	// Failures should be detected by the unit test suite.
 	return (time_t)timestamp;
 }
 
-inline void release_strings(JNIEnv *env, Classes *classes, jobjectArray array, const char ** strings, int size) {
+static inline void release_strings(JNIEnv *env, Classes *classes, jobjectArray array, const char ** strings, int size) {
 	int i;
 	// Release the elements
 	for (i = 0; i < size; i++) {
@@ -118,7 +118,7 @@ inline void release_strings(JNIEnv *env, Classes *classes, jobjectArray array, c
 	free(strings);
 }
 
-inline const char ** jstrings_to_strings(JNIEnv *env, Classes *classes, jobjectArray array, int *size) {
+static inline const char ** jstrings_to_strings(JNIEnv *env, Classes *classes, jobjectArray array, int *size) {
 	(*size) = (*env)->GetArrayLength(env, array);
 	const char **strings = (const char **)malloc((*size)*sizeof(const char *));
 	if (strings == NULL) {
@@ -141,7 +141,7 @@ inline const char ** jstrings_to_strings(JNIEnv *env, Classes *classes, jobjectA
 	return strings;
 }
 
-inline jobjectArray strings_to_jstrings(JNIEnv *env, Classes *classes, char **strings, int size) {
+static inline jobjectArray strings_to_jstrings(JNIEnv *env, Classes *classes, char **strings, int size) {
 	jobjectArray array = (*env)->NewObjectArray(env, size, classes->string, NULL);
 	if (array == NULL) {
 		(*env)->ThrowNew(env, classes->outOfMemoryError, "failed to allocate memory for string array");
@@ -163,7 +163,7 @@ inline jobjectArray strings_to_jstrings(JNIEnv *env, Classes *classes, char **st
 	return array;
 }
 
-inline jobjectArray rrd_values_to_matrix(JNIEnv *env, Classes *classes, rrd_value_t *values, int columns, int rows) {
+static inline jobjectArray rrd_values_to_matrix(JNIEnv *env, Classes *classes, rrd_value_t *values, int columns, int rows) {
 	jobjectArray matrix = (*env)->NewObjectArray(env, columns, classes->doubleArray, NULL);
 	if (matrix == NULL) {
 		(*env)->ThrowNew(env, classes->outOfMemoryError, "failed to allocate memory for double[] array");
