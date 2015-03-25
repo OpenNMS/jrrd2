@@ -41,5 +41,5 @@ ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
 # Build the shared library
 include_directories("${JNI_INCLUDE_DIRS}" "${CMAKE_CURRENT_SOURCE_DIR}/include")
-add_library(jrrd2 SHARED src/rrd_jinterface.c)
+add_library(jrrd2 MODULE src/rrd_jinterface.c)
 target_link_libraries(jrrd2 rrd_th)
