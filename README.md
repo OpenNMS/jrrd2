@@ -9,23 +9,7 @@ Building
 Requires maven (tested with 3.1.1) and cmake (tested with 2.8.12.2)
 
 ```sh
-# Cleanup
-pushd . && rm -rf build dist && mkdir build
-
-# Generate the JNI interface header
-cd ./java
-mvn compile
-
-# Build the shared library
-cd ../build
-cmake ../jni/
-make
-
-# Run the tests and create the .jar
-cd ../java
-mvn package
-
-popd
+./build.sh
 ```
 
 The dist/ folder should now contain both jrrd2.jar and libjrrd2.so.
