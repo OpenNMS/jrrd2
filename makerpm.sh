@@ -197,6 +197,7 @@ function main()
         for spec in $SPECS
         do
             run rpmbuild -bb \
+                --nodeps \
                 --define "skip_compile $(skipCompile)" \
                 --define "enable_snapshots $(enableSnapshots)" \
                 --define "extrainfo $EXTRA_INFO" \
