@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [ ! -e build.sh ]; then
+  echo "build.sh must be ran from the root of the project."
+fi
+
 # Cleanup
 pushd . && rm -rf build dist && mkdir build
 
@@ -14,7 +18,7 @@ make
 
 # Run the tests and create the .jar
 cd ../java
-mvn package || echo "Build failed." && exit 1
+mvn package || (echo "Build failed." && exit 1)
 cp target/jrrd2-api-*.jar ../dist/
 
 popd

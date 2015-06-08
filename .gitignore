@@ -8,6 +8,7 @@ install_manifest.txt
 # Build/target folders
 build/
 dist/
+tmp/
 
 # Generated headers
 config.h
