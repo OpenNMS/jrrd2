@@ -27,6 +27,9 @@
  *******************************************************************************/
 package org.opennms.netmgt.rrd.jrrd2;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * A native interface to librrd.
  *
@@ -34,6 +37,8 @@ package org.opennms.netmgt.rrd.jrrd2;
  * @version 2.0.0
  */
 public final class Interface {
+
+	private static final Logger LOG = LoggerFactory.getLogger(Interface.class);
 
     private static final String LIBRARY_NAME = "jrrd2";
 
@@ -66,25 +71,17 @@ public final class Interface {
 
         String property = System.getProperty(PROPERTY_NAME);
         if (property != null) {
-            debug("System property '" + PROPERTY_NAME + "' set to '" + System.getProperty(PROPERTY_NAME) + ".  Attempting to load " + LIBRARY_NAME + " library from this location.");
+            LOG.debug("System property '{}' set to '{}'. Attempting to load {} library from this location.", PROPERTY_NAME,  System.getProperty(PROPERTY_NAME), LIBRARY_NAME);
             System.load(property);
         } else {
-            debug("System property '" + PROPERTY_NAME + "' not set.  Attempting to load library using System.loadLibrary(\"" + LIBRARY_NAME + "\").");
+            LOG.debug("System property '{}' no set. Attempting to load library using System.loadLibrary(\"{}\").", PROPERTY_NAME, LIBRARY_NAME);
             System.loadLibrary(LIBRARY_NAME);
         }
-        info("Successfully loaded " + LIBRARY_NAME + " library.");
+        LOG.info("Successfully loaded {} library.", LIBRARY_NAME);
     }
 
     public static synchronized void reload() throws SecurityException, UnsatisfiedLinkError {
         m_loaded = false;
         init();
-    }
-
-    public static void debug(String msg) {
-        System.err.println("[DEBUG] "+msg);
-    }
-
-    public static void info(String msg) {
-        System.err.println("[INFO] "+msg);
     }
 }
