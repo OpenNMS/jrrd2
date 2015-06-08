@@ -9,7 +9,7 @@ pushd . && rm -rf build dist && mkdir build
 
 # Generate the JNI interface header
 cd ./java
-mvn compile
+mvn clean compile
 
 # Build the shared library
 cd ../build
