@@ -4,7 +4,7 @@ jrrd2
 A thread-safe rewrite of [jrrd](https://github.com/OpenNMS/jrrd)
 
 Building
-========
+--------
 
 Requires maven (tested with 3.1.1) and cmake (tested with 2.8.12.2)
 
@@ -15,7 +15,7 @@ Requires maven (tested with 3.1.1) and cmake (tested with 2.8.12.2)
 The dist/ folder should now contain both jrrd2-api-VERSION.jar and libjrrd2.so.
 
 Packaging
-=========
+---------
 
 Requires [fpm](https://github.com/jordansissel/fpm) (tested with 1.3.3)
 
