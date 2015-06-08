@@ -30,6 +30,12 @@ package org.opennms.netmgt.rrd.jrrd2;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Used to store the results of a {@link org.opennms.netmgt.rrd.jrrd2.JRrd2#fetch}
+ * or {@link org.opennms.netmgt.rrd.jrrd2.JRrd2#xport}.
+ *
+ * @author Jesse White <jesse@opennms.org>
+ */
 public class FetchResults {
 
     private final long m_start;

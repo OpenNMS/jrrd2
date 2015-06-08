@@ -27,8 +27,20 @@
  *******************************************************************************/
 package org.opennms.netmgt.rrd.jrrd2;
 
+/**
+ * A wrapper class for the native interface to librrd.
+ *
+ * This class automatically loads and initializes
+ * the required system libraries.
+ *
+ * @author Jesse White <jesse@opennms.org>
+ * @version 2.0.0
+ */
 public class JRrd2 {
 
+    /* A suggested by http://linux.die.net/man/1/rrdthreads:
+     *   Every thread SHOULD call "rrd_get_context()" before its first call to any "librrd_th" function
+     */
     private static final ThreadLocal<Void> rrdContext =
         new ThreadLocal<Void>() {
             @Override protected Void initialValue() {
