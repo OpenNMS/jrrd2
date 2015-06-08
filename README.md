@@ -12,7 +12,7 @@ Requires maven (tested with 3.1.1) and cmake (tested with 2.8.12.2)
 ./build.sh
 ```
 
-The dist/ folder should now contain both jrrd2-api-VERSION.jar and libjrrd2.so.
+The dist/ folder should now contain both **jrrd2-api-VERSION.jar** and **libjrrd2.so**.
 
 Packaging
 ---------
