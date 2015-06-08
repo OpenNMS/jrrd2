@@ -14,12 +14,7 @@ make
 
 # Run the tests and create the .jar
 cd ../java
-mvn package
+mvn package || echo "Build failed." && exit 1
+cp target/jrrd2-api-*.jar ../dist/
 
 popd
-
-# Verify
-if [[ ! -e dist/jrrd2.jar || ! -e dist/libjrrd2.so ]]; then
-  echo "Build failed."
-  exit 1
-fi

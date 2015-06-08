@@ -30,15 +30,17 @@
  *     http://www.opennms.org/
  *     http://www.opennms.com/
  *******************************************************************************/
-package org.opennms.netmgt.rrd.jrrd2;
+package org.opennms.netmgt.rrd.jrrd2.impl;
 
+import org.opennms.netmgt.rrd.jrrd2.api.FetchResults;
+import org.opennms.netmgt.rrd.jrrd2.api.JRrd2Exception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * A native interface to librrd.
  *
- * Use {@link org.opennms.netmgt.rrd.jrrd2.JRrd2} instead of making
+ * Use {@link org.opennms.netmgt.rrd.jrrd2.impl.JRrd2} instead of making
  * calls directly to this interface.
  *
  * @author Jesse White <jesse@opennms.org>
@@ -56,13 +58,13 @@ public final class Interface {
 
     protected static native void rrd_get_context();
 
-    protected static native void rrd_create_r(String filename, long pdp_step, long last_up, String[] argv) throws JniRrdException;
+    protected static native void rrd_create_r(String filename, long pdp_step, long last_up, String[] argv) throws JRrd2Exception;
 
-    protected static native void rrd_update_r(String filename, String template, String[] argv) throws JniRrdException;
+    protected static native void rrd_update_r(String filename, String template, String[] argv) throws JRrd2Exception;
 
-    protected static native FetchResults rrd_fetch_r(String filename, String cf, long start, long end, long step) throws JniRrdException;
+    protected static native FetchResults rrd_fetch_r(String filename, String cf, long start, long end, long step) throws JRrd2Exception;
 
-    protected static synchronized native FetchResults rrd_xport(String[] argv) throws JniRrdException;
+    protected static synchronized native FetchResults rrd_xport(String[] argv) throws JRrd2Exception;
 
     /**
      * Load the jrrd library and create the singleton instance of the interface.

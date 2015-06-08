@@ -3,7 +3,9 @@
   <groupId>org.opennms</groupId>
   <artifactId>jrrd2-api</artifactId>
   <version>2.0.0-SNAPSHOT</version>
-  
+  <name>JRrd2 API</name>
+  <packaging>bundle</packaging>
+
   <properties>
     <jdk.version>1.7</jdk.version>
     <slf4j.version>1.7.12</slf4j.version>
@@ -43,26 +45,22 @@
                         <goal>javah</goal>
                     </goals>
                     <configuration>
-                        <javahClass>org.opennms.netmgt.rrd.jrrd2.Interface</javahClass>
+                        <javahClass>org.opennms.netmgt.rrd.jrrd2.impl.Interface</javahClass>
                         <javahOutputFilePath>${project.basedir}/../jni/include/jrrd2_java_interface.h</javahOutputFilePath>
                     </configuration>
                 </execution>
             </executions>
         </plugin>
-        <!-- Make this jar executable -->
         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <version>2.5</version>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>maven-bundle-plugin</artifactId>
+            <version>2.5.4</version>
+            <extensions>true</extensions>
             <configuration>
-              <archive>
-                <manifest>
-                    <!-- Jar file entry point -->
-                    <mainClass>org.opennms.netmgt.rrd.jrrd2.Interface</mainClass>
-                </manifest>
-              </archive>
-              <outputDirectory>${project.basedir}/../dist/</outputDirectory>
-              <finalName>jrrd2</finalName>
+                <instructions>
+                    <Export-Package>org.opennms.netmgt.rrd.jrrd2.api</Export-Package>
+                    <Private-Package>org.opennms.netmgt.rrd.jrrd2.impl</Private-Package>
+                </instructions>
             </configuration>
         </plugin>
     </plugins>

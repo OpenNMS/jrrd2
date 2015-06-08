@@ -64,11 +64,11 @@
 #pragma export reset
 #endif
 
-// The signature can be determined with: javap -classpath jrrd2.jar -s -p org.opennms.netmgt.rrd.rrdtool.FetchResults
+// The signature can be determined with: javap -classpath jrrd2.jar -s -p org.opennms.netmgt.rrd.jrrd2.api.FetchResults
 const char* FETCH_RESULTS_CONSTRUCTOR_METHOD_ID = "(JJJ[Ljava/lang/String;[[D)V";
 
 typedef struct {
-	jclass jniRrdException,
+	jclass jrrd2Exception,
 			outOfMemoryError,
 			string,
 			doubleArray,
@@ -76,8 +76,8 @@ typedef struct {
 } Classes;
 
 int findClasses(JNIEnv *env, Classes* classes) {
-	classes->jniRrdException = (*env)->FindClass(env, "org/opennms/netmgt/rrd/jrrd2/JniRrdException");
-	if(classes->jniRrdException == NULL || (*env)->ExceptionOccurred(env) != NULL) {
+	classes->jrrd2Exception = (*env)->FindClass(env, "org/opennms/netmgt/rrd/jrrd2/api/JRrd2Exception");
+	if(classes->jrrd2Exception == NULL || (*env)->ExceptionOccurred(env) != NULL) {
 		return -1;
 	}
 
@@ -96,7 +96,7 @@ int findClasses(JNIEnv *env, Classes* classes) {
 		return -1;
 	}
 
-	classes->fetchResults = (*env)->FindClass(env, "org/opennms/netmgt/rrd/jrrd2/FetchResults");
+	classes->fetchResults = (*env)->FindClass(env, "org/opennms/netmgt/rrd/jrrd2/api/FetchResults");
 	if(classes->fetchResults == NULL || (*env)->ExceptionOccurred(env) != NULL) {
 		return -1;
 	}
@@ -205,7 +205,7 @@ static inline jobjectArray rrd_values_to_matrix(JNIEnv *env, Classes *classes, r
 /**
 *	rrd_context_t *rrd_get_context(void);
 */
-JNIEXPORT void JNICALL Java_org_opennms_netmgt_rrd_jrrd2_Interface_rrd_1get_1context
+JNIEXPORT void JNICALL Java_org_opennms_netmgt_rrd_jrrd2_impl_Interface_rrd_1get_1context
 		(JNIEnv *env, jclass clazz) {
 	// Every thread should call this before its first call to any librrd_th functions
 	rrd_get_context();
@@ -219,7 +219,7 @@ JNIEXPORT void JNICALL Java_org_opennms_netmgt_rrd_jrrd2_Interface_rrd_1get_1con
 	int argc,
 	const char **argv);
 */
-JNIEXPORT void JNICALL Java_org_opennms_netmgt_rrd_jrrd2_Interface_rrd_1create_1r
+JNIEXPORT void JNICALL Java_org_opennms_netmgt_rrd_jrrd2_impl_Interface_rrd_1create_1r
 		(JNIEnv *env, jclass clazz, jstring filename, jlong pdp_step, jlong last_up, jobjectArray argv) {
 
 	// Grab references to the classes we may need
@@ -230,12 +230,12 @@ JNIEXPORT void JNICALL Java_org_opennms_netmgt_rrd_jrrd2_Interface_rrd_1create_1
 
 	// Input validation
 	if (filename == NULL) {
-		(*env)->ThrowNew(env, classes.jniRrdException, "filename cannot be null.");
+		(*env)->ThrowNew(env, classes.jrrd2Exception, "filename cannot be null.");
 		return;
 	}
 
 	if (argv == NULL) {
-		(*env)->ThrowNew(env, classes.jniRrdException, "argv cannot be null.");
+		(*env)->ThrowNew(env, classes.jrrd2Exception, "argv cannot be null.");
 		return;
 	}
 
@@ -247,7 +247,7 @@ JNIEXPORT void JNICALL Java_org_opennms_netmgt_rrd_jrrd2_Interface_rrd_1create_1
 
 	if (pdp_step < (jlong) LONG_MIN || pdp_step > (jlong) LONG_MAX) {
 		(*env)->ReleaseStringUTFChars(env, filename, n_filename);
-		(*env)->ThrowNew(env, classes.jniRrdException, "pdp_step out of bounds.");
+		(*env)->ThrowNew(env, classes.jrrd2Exception, "pdp_step out of bounds.");
 		return;
 	}
 	long n_pdp_step = pdp_step;
@@ -275,10 +275,10 @@ JNIEXPORT void JNICALL Java_org_opennms_netmgt_rrd_jrrd2_Interface_rrd_1create_1
 	// Process the results
 	if (result == -1) {
 		if (rrd_test_error()) {
-			(*env)->ThrowNew(env, classes.jniRrdException, rrd_get_error());
+			(*env)->ThrowNew(env, classes.jrrd2Exception, rrd_get_error());
 			rrd_clear_error();
 		} else {
-			(*env)->ThrowNew(env, classes.jniRrdException, "rrd_create_r() failed, but no error code was set.");
+			(*env)->ThrowNew(env, classes.jrrd2Exception, "rrd_create_r() failed, but no error code was set.");
 		}
 	}
 }
@@ -290,7 +290,7 @@ JNIEXPORT void JNICALL Java_org_opennms_netmgt_rrd_jrrd2_Interface_rrd_1create_1
 	int argc,
 	const char **argv);
 */
-JNIEXPORT void JNICALL Java_org_opennms_netmgt_rrd_jrrd2_Interface_rrd_1update_1r
+JNIEXPORT void JNICALL Java_org_opennms_netmgt_rrd_jrrd2_impl_Interface_rrd_1update_1r
 		(JNIEnv *env, jclass clazz, jstring filename, jstring template, jobjectArray argv) {
 
 	// Grab references to the classes we may need
@@ -301,12 +301,12 @@ JNIEXPORT void JNICALL Java_org_opennms_netmgt_rrd_jrrd2_Interface_rrd_1update_1
 
 	// Input validation
 	if (filename == NULL) {
-		(*env)->ThrowNew(env, classes.jniRrdException, "filename cannot be null.");
+		(*env)->ThrowNew(env, classes.jrrd2Exception, "filename cannot be null.");
 		return;
 	}
 
 	if (argv == NULL) {
-		(*env)->ThrowNew(env, classes.jniRrdException, "argv cannot be null.");
+		(*env)->ThrowNew(env, classes.jrrd2Exception, "argv cannot be null.");
 		return;
 	}
 
@@ -353,10 +353,10 @@ JNIEXPORT void JNICALL Java_org_opennms_netmgt_rrd_jrrd2_Interface_rrd_1update_1
 	// Process the results
 	if (result == -1) {
 		if (rrd_test_error()) {
-			(*env)->ThrowNew(env, classes.jniRrdException, rrd_get_error());
+			(*env)->ThrowNew(env, classes.jrrd2Exception, rrd_get_error());
 			rrd_clear_error();
 		} else {
-			(*env)->ThrowNew(env, classes.jniRrdException, "rrd_update_r() failed, but no error code was set.");
+			(*env)->ThrowNew(env, classes.jrrd2Exception, "rrd_update_r() failed, but no error code was set.");
 		}
 	}
 }
@@ -372,7 +372,7 @@ JNIEXPORT void JNICALL Java_org_opennms_netmgt_rrd_jrrd2_Interface_rrd_1update_1
 		char ***ds_namv,
 		rrd_value_t **data);
 */
-JNIEXPORT jobject JNICALL Java_org_opennms_netmgt_rrd_jrrd2_Interface_rrd_1fetch_1r
+JNIEXPORT jobject JNICALL Java_org_opennms_netmgt_rrd_jrrd2_impl_Interface_rrd_1fetch_1r
 		(JNIEnv *env, jclass clazz, jstring filename, jstring cf, jlong start, jlong end, jlong step) {
 
 	// Grab references to the classes we may need
@@ -384,18 +384,18 @@ JNIEXPORT jobject JNICALL Java_org_opennms_netmgt_rrd_jrrd2_Interface_rrd_1fetch
 	// Grab a reference to the results constructor
 	jmethodID constructor = (*env)->GetMethodID(env, classes.fetchResults, "<init>", FETCH_RESULTS_CONSTRUCTOR_METHOD_ID);
 	if (constructor == NULL) {
-		(*env)->ThrowNew(env, classes.jniRrdException, "no valid constructor found.");
+		(*env)->ThrowNew(env, classes.jrrd2Exception, "no valid constructor found.");
 		return NULL;
 	}
 
 	// Input validation
 	if (filename == NULL) {
-		(*env)->ThrowNew(env, classes.jniRrdException, "filename cannot be null.");
+		(*env)->ThrowNew(env, classes.jrrd2Exception, "filename cannot be null.");
 		return NULL;
 	}
 
 	if (cf == NULL) {
-		(*env)->ThrowNew(env, classes.jniRrdException, "cf cannot be null.");
+		(*env)->ThrowNew(env, classes.jrrd2Exception, "cf cannot be null.");
 		return NULL;
 	}
 
@@ -434,10 +434,10 @@ JNIEXPORT jobject JNICALL Java_org_opennms_netmgt_rrd_jrrd2_Interface_rrd_1fetch
 
 	if (result == -1) {
 		if (rrd_test_error()) {
-			(*env)->ThrowNew(env, classes.jniRrdException, rrd_get_error());
+			(*env)->ThrowNew(env, classes.jrrd2Exception, rrd_get_error());
 			rrd_clear_error();
 		} else {
-			(*env)->ThrowNew(env, classes.jniRrdException, "rrd_update_r() failed, but no error code was set.");
+			(*env)->ThrowNew(env, classes.jrrd2Exception, "rrd_update_r() failed, but no error code was set.");
 		}
 
 		return NULL;
@@ -487,7 +487,7 @@ JNIEXPORT jobject JNICALL Java_org_opennms_netmgt_rrd_jrrd2_Interface_rrd_1fetch
 	unsigned long *col_cnt
 	char ***legend_v);
 */
-JNIEXPORT jobject JNICALL Java_org_opennms_netmgt_rrd_jrrd2_Interface_rrd_1xport
+JNIEXPORT jobject JNICALL Java_org_opennms_netmgt_rrd_jrrd2_impl_Interface_rrd_1xport
 		(JNIEnv *env, jclass class, jobjectArray argv) {
 
 	// Grab references to the classes we may need
@@ -499,13 +499,13 @@ JNIEXPORT jobject JNICALL Java_org_opennms_netmgt_rrd_jrrd2_Interface_rrd_1xport
 	// Grab a reference to the results constructor
 	jmethodID constructor = (*env)->GetMethodID(env, classes.fetchResults, "<init>", FETCH_RESULTS_CONSTRUCTOR_METHOD_ID);
 	if (constructor == NULL) {
-		(*env)->ThrowNew(env, classes.jniRrdException, "no valid constructor found.");
+		(*env)->ThrowNew(env, classes.jrrd2Exception, "no valid constructor found.");
 		return NULL;
 	}
 
 	// Input validation
 	if (argv == NULL) {
-		(*env)->ThrowNew(env, classes.jniRrdException, "argv cannot be null.");
+		(*env)->ThrowNew(env, classes.jrrd2Exception, "argv cannot be null.");
 		return NULL;
 	}
 
@@ -534,10 +534,10 @@ JNIEXPORT jobject JNICALL Java_org_opennms_netmgt_rrd_jrrd2_Interface_rrd_1xport
 	// Handle the results
 	if (result == -1) {
 		if (rrd_test_error()) {
-			(*env)->ThrowNew(env, classes.jniRrdException, rrd_get_error());
+			(*env)->ThrowNew(env, classes.jrrd2Exception, rrd_get_error());
 			rrd_clear_error();
 		} else {
-			(*env)->ThrowNew(env, classes.jniRrdException, "rrd_xport() failed, but no error code was set.");
+			(*env)->ThrowNew(env, classes.jrrd2Exception, "rrd_xport() failed, but no error code was set.");
 		}
 		return NULL;
 	}

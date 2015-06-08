@@ -30,7 +30,7 @@
  *     http://www.opennms.org/
  *     http://www.opennms.com/
  *******************************************************************************/
-package org.opennms.netmgt.rrd.jrrd2;
+package org.opennms.netmgt.rrd.jrrd2.impl;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -40,9 +40,9 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.opennms.netmgt.rrd.jrrd2.FetchResults;
-import org.opennms.netmgt.rrd.jrrd2.Interface;
-import org.opennms.netmgt.rrd.jrrd2.JniRrdException;
+import org.opennms.netmgt.rrd.jrrd2.api.FetchResults;
+import org.opennms.netmgt.rrd.jrrd2.api.JRrd2Exception;
+import org.opennms.netmgt.rrd.jrrd2.impl.Interface;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -59,23 +59,23 @@ public class InterfaceTest {
         Interface.init();
     }
 
-    @Test(expected=JniRrdException.class)
-    public void createFailsWhenFilenameIsNull() throws JniRrdException {
+    @Test(expected=JRrd2Exception.class)
+    public void createFailsWhenFilenameIsNull() throws JRrd2Exception {
         Interface.rrd_create_r(null, 1, 1, new String[]{"DS:test:GAUGE:900:0:100", "RRA:MIN:0.5:1:1000"});
     }
 
-    @Test(expected=JniRrdException.class)
-    public void createFailsWhenArgvIsNull() throws JniRrdException {
+    @Test(expected=JRrd2Exception.class)
+    public void createFailsWhenArgvIsNull() throws JRrd2Exception {
         Interface.rrd_create_r("test.rrd", 1, 1, null);
     }
 
-    @Test(expected=JniRrdException.class)
-    public void createFailsWhenArgvIsEmpty() throws JniRrdException {
+    @Test(expected=JRrd2Exception.class)
+    public void createFailsWhenArgvIsEmpty() throws JRrd2Exception {
         Interface.rrd_create_r("test.rrd", 1, 1, new String[]{});
     }
 
     @Test
-    public void canCreate() throws JniRrdException {
+    public void canCreate() throws JRrd2Exception {
         File rrdFile = new File(tempFolder.getRoot(), "test.rrd");
         assertThat(rrdFile.isFile(), is(false));
 
@@ -87,25 +87,25 @@ public class InterfaceTest {
         assertThat(rrdFile.isFile(), is(true));
     }
 
-    @Test(expected=JniRrdException.class)
-    public void updateFailsWhenFilenameIsNull() throws JniRrdException {
+    @Test(expected=JRrd2Exception.class)
+    public void updateFailsWhenFilenameIsNull() throws JRrd2Exception {
         Interface.rrd_update_r(null, "", new String[]{});
     }
 
-    @Test(expected=JniRrdException.class)
-    public void updateFailsWhenArgvIsNull() throws JniRrdException {
+    @Test(expected=JRrd2Exception.class)
+    public void updateFailsWhenArgvIsNull() throws JRrd2Exception {
         Interface.rrd_update_r("", "", null);
     }
 
-    @Test(expected=JniRrdException.class)
-    public void updateFailsWhenFileIsMissing() throws JniRrdException {
+    @Test(expected=JRrd2Exception.class)
+    public void updateFailsWhenFileIsMissing() throws JRrd2Exception {
         File missingFile = Paths.get("should", "not", "exist").toFile();
         assertThat(missingFile.isFile(), is(false));
         Interface.rrd_update_r(missingFile.getAbsolutePath(), "", new String[]{});
     }
 
-    @Test(expected=JniRrdException.class)
-    public void updateFailsWhenNoValuesAreGiven() throws JniRrdException {
+    @Test(expected=JRrd2Exception.class)
+    public void updateFailsWhenNoValuesAreGiven() throws JRrd2Exception {
         File rrdFile = new File(tempFolder.getRoot(), "test.rrd");
         assertThat(rrdFile.isFile(), is(false));
 
@@ -120,7 +120,7 @@ public class InterfaceTest {
     }
 
     @Test
-    public void canUpdate() throws JniRrdException {
+    public void canUpdate() throws JRrd2Exception {
         File rrdFile = new File(tempFolder.getRoot(), "test.rrd");
         assertThat(rrdFile.isFile(), is(false));
 
@@ -138,18 +138,18 @@ public class InterfaceTest {
         });
     }
 
-    @Test(expected=JniRrdException.class)
-    public void fetchFailsWhenFilenameIsNull() throws JniRrdException {
+    @Test(expected=JRrd2Exception.class)
+    public void fetchFailsWhenFilenameIsNull() throws JRrd2Exception {
         Interface.rrd_fetch_r(null, "AVERAGE", 0, 1, 1);
     }
 
-    @Test(expected=JniRrdException.class)
-    public void fetchFailsWhenCfIsNull() throws JniRrdException {
+    @Test(expected=JRrd2Exception.class)
+    public void fetchFailsWhenCfIsNull() throws JRrd2Exception {
         Interface.rrd_fetch_r("", null, 0, 1, 1);
     }
 
     @Test
-    public void canFetchFromMultipleDatasources() throws JniRrdException, InterruptedException {
+    public void canFetchFromMultipleDatasources() throws JRrd2Exception, InterruptedException {
         File rrdFile = new File(tempFolder.getRoot(), "test.rrd");
         assertThat(rrdFile.isFile(), is(false));
 
@@ -189,18 +189,18 @@ public class InterfaceTest {
         assertThat(results.getValues()[1][1], is(100.0));
     }
 
-    @Test(expected=JniRrdException.class)
-    public void xportFailsWhenArgvIsNull() throws JniRrdException {
+    @Test(expected=JRrd2Exception.class)
+    public void xportFailsWhenArgvIsNull() throws JRrd2Exception {
         Interface.rrd_xport(null);
     }
 
-    @Test(expected=JniRrdException.class)
-    public void xportFailsWhenArgvIsEmpty() throws JniRrdException {
+    @Test(expected=JRrd2Exception.class)
+    public void xportFailsWhenArgvIsEmpty() throws JRrd2Exception {
         Interface.rrd_xport(new String[]{});
     }
 
     @Test
-    public void canXport() throws JniRrdException {
+    public void canXport() throws JRrd2Exception {
         File rrdFile = new File(tempFolder.getRoot(), "test.rrd");
         assertThat(rrdFile.isFile(), is(false));
 

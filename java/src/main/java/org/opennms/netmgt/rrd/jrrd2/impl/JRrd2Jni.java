@@ -30,7 +30,11 @@
  *     http://www.opennms.org/
  *     http://www.opennms.com/
  *******************************************************************************/
-package org.opennms.netmgt.rrd.jrrd2;
+package org.opennms.netmgt.rrd.jrrd2.impl;
+
+import org.opennms.netmgt.rrd.jrrd2.api.FetchResults;
+import org.opennms.netmgt.rrd.jrrd2.api.JRrd2;
+import org.opennms.netmgt.rrd.jrrd2.api.JRrd2Exception;
 
 /**
  * A wrapper class for the native interface to librrd.
@@ -41,7 +45,7 @@ package org.opennms.netmgt.rrd.jrrd2;
  * @author Jesse White <jesse@opennms.org>
  * @version 2.0.0
  */
-public class JRrd2 {
+public class JRrd2Jni implements JRrd2 {
 
     /* A suggested by http://linux.die.net/man/1/rrdthreads:
      *   Every thread SHOULD call "rrd_get_context()" before its first call to any "librrd_th" function
@@ -54,26 +58,30 @@ public class JRrd2 {
             }
         };
 
-    public JRrd2() {
+    public JRrd2Jni() {
         Interface.init();
     }
 
-    public void create(final String filename, final long step, final long start, String[] argv) throws JniRrdException {
+    @Override
+    public void create(final String filename, final long step, final long start, String[] argv) throws JRrd2Exception {
         rrdContext.get();
         Interface.rrd_create_r(filename, step, start, argv);
     }
 
-    public void update(final String filename, final String template, final String[] argv) throws JniRrdException {
+    @Override
+    public void update(final String filename, final String template, final String[] argv) throws JRrd2Exception {
         rrdContext.get();
         Interface.rrd_update_r(filename, template, argv);
     }
 
-    public FetchResults fetch(String filename, String cf, long start, long end, long step) throws JniRrdException {
+    @Override
+    public FetchResults fetch(String filename, String cf, long start, long end, long step) throws JRrd2Exception {
         rrdContext.get();
         return Interface.rrd_fetch_r(filename, cf, start, end, step);
     }
 
-    public FetchResults xport(long start, long end, long step, long maxrows, String[] argv) throws JniRrdException {
+    @Override
+    public FetchResults xport(long start, long end, long step, long maxrows, String[] argv) throws JRrd2Exception {
         final int numFixedArguments = maxrows > 0 ? 9 : 7;
 
         // Convert the parameters to command line arguments

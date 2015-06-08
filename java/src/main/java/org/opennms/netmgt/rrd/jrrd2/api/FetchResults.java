@@ -30,14 +30,14 @@
  *     http://www.opennms.org/
  *     http://www.opennms.com/
  *******************************************************************************/
-package org.opennms.netmgt.rrd.jrrd2;
+package org.opennms.netmgt.rrd.jrrd2.api;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Used to store the results of a {@link org.opennms.netmgt.rrd.jrrd2.JRrd2#fetch}
- * or {@link org.opennms.netmgt.rrd.jrrd2.JRrd2#xport}.
+ * Used to store the results of a {@link org.opennms.netmgt.rrd.jrrd2.api.JRrd2#fetch}
+ * or {@link org.opennms.netmgt.rrd.jrrd2.api.JRrd2#xport}.
  *
  * @author Jesse White <jesse@opennms.org>
  */

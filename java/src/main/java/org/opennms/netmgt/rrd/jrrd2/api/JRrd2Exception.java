@@ -30,12 +30,17 @@
  *     http://www.opennms.org/
  *     http://www.opennms.com/
  *******************************************************************************/
-package org.opennms.netmgt.rrd.jrrd2;
+package org.opennms.netmgt.rrd.jrrd2.api;
 
-public class JniRrdException extends Exception {
+/**
+ * Generic exception.
+ *
+ * @author Jesse White <jesse@opennms.org>
+ */
+public class JRrd2Exception extends Exception {
     private static final long serialVersionUID = -3040867952239972092L;
 
-    public JniRrdException(final String message) {
+    public JRrd2Exception(final String message) {
         super(message);
     }
 }
