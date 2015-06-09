@@ -1,7 +1,9 @@
-jrrd2
+JRrd2
 =====
 
-A thread-safe rewrite of [jrrd](https://github.com/OpenNMS/jrrd)
+Jrrd2 provides a native interface for Java to [rrdtool](http://oss.oetiker.ch/rrdtool).
+
+It is a rewrite and successor of [jrrd](https://github.com/OpenNMS/jrrd).
 
 Building
 --------
