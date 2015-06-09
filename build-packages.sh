@@ -1,7 +1,7 @@
 #!/bin/bash
 VERSION="2.0.0"
 BUILD="1"
-JAR="./dist/jrrd2-api-*.jar"
+JAR="./dist/jrrd2-api-$VERSION.jar"
 LIB="./dist/libjrrd2.so"
 
 if [ ! -e build-packages.sh ]; then
@@ -51,8 +51,8 @@ mkdir -p ./tmp/deb/usr/lib/jni
 mkdir -p ./tmp/deb/usr/share/java
 cp $LIB ./tmp/deb/usr/lib/jni/libjrrd2.so
 chmod 755 ./tmp/deb/usr/lib/jni/libjrrd2.so
-cp $JAR ./tmp/deb/usr/lib/jni/jrrd2.jar
-chmod 644 ./tmp/deb/usr/lib/jni/jrrd2.jar
+cp $JAR ./tmp/deb/usr/share/java/jrrd2.jar
+chmod 644 ./tmp/deb/usr/share/java/jrrd2.jar
 
 createPackage "deb" "--iteration $BUILD" || exit 1
 
