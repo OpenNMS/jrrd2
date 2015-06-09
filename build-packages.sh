@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="2.0.0"
+VERSION="2.0.1-SNAPSHOT"
 BUILD="1"
 JAR="./dist/jrrd2-api-$VERSION.jar"
 LIB="./dist/libjrrd2.so"
