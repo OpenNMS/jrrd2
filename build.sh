@@ -2,6 +2,19 @@
 
 if [ ! -e build.sh ]; then
   echo "build.sh must be ran from the root of the project."
+  exit 1
+fi
+
+which cmake >/dev/null 2>&1
+if [ $? -ne 0 ]; then
+  echo "You must install cmake first."
+  exit 1
+fi
+
+which mvn >/dev/null 2>&1
+if [ $? -ne 0 ]; then
+  echo "You must install maven first."
+  exit 1
 fi
 
 # Cleanup

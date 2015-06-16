@@ -12,6 +12,7 @@ fi
 rm -f ./dist/*.rpm
 rm -f ./dist/*.deb
 rm -rf ./tmp && mkdir ./tmp
+mkdir -p ./dist
 
 # Make sure fpm is installed before proceeding
 which fpm >/dev/null
