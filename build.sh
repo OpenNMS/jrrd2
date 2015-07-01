@@ -5,6 +5,12 @@ if [ ! -e build.sh ]; then
   exit 1
 fi
 
+for DIR in /usr/lib/jvm/java-7-openjdk-*; do
+	if [ -d "$DIR" ] && [ -x "$DIR"/bin/javac ]; then
+		export JAVA_HOME="$DIR"
+	fi
+done
+
 which cmake >/dev/null 2>&1
 if [ $? -ne 0 ]; then
   echo "You must install cmake first."
