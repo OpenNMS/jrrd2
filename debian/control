@@ -10,6 +10,6 @@ Homepage: http://github.com/OpenNMS/jrrd2
 
 Package: jrrd2
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, rrdtool (>= 1.5.0)
+Depends: ${shlibs:Depends}, ${misc:Depends}, librrd4 (>= 1.5.0), rrdtool (>= 1.5.0)
 Description: Java interface to RRDTool
  A Java native interface (JNI) to RRDTool
