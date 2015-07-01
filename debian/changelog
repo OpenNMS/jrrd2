@@ -1,0 +1,11 @@
+jrrd2 (2.0.2) stable; urgency=low
+
+  * Fix naming of jrrd2 jar.
+
+ -- Benjamin Reed <ranger@opennms.org>  Mon, 12 Oct 2015 14:33:00 -0400
+
+jrrd2 (2.0.1) stable; urgency=low
+
+  * Initial release.
+
+ -- Benjamin Reed <ranger@opennms.org>  Wed, 01 Jul 2015 13:23:50 -0400
