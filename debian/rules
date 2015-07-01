@@ -1,0 +1,60 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE=1
+
+# to make sure hardening flags make it through to CMake
+CPPFLAGS:=$(shell dpkg-buildflags --get CPPFLAGS)
+CFLAGS:=$(shell dpkg-buildflags --get CFLAGS) $(CPPFLAGS)
+CXXFLAGS:=$(shell dpkg-buildflags --get CXXFLAGS) $(CPPFLAGS)
+LDFLAGS:=$(shell dpkg-buildflags --get LDFLAGS)
+
+
+CLEANUP=dist \
+	tmp \
+	java/target \
+	jni/include/config.h \
+	jni/include/jrrd2_java_interface.h
+
+build:
+	./build.sh
+
+clean:
+	dh_testdir
+	dh_testroot
+	@rm -rf $(CLEANUP)
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	install -d -m 755 $(CURDIR)/debian/jrrd2/usr/lib/jni
+	install -d -m 755 $(CURDIR)/debian/jrrd2/usr/share/java
+	install -c -m 755 dist/libjrrd2.so $(CURDIR)/debian/jrrd2/usr/lib/jni/
+	install -c -m 644 dist/jrrd2-api-*.jar $(CURDIR)/debian/jrrd2/usr/share/java/jrrd2.jar
+	rm -f $(CURDIR)/debian/jrrd2/usr/share/java/*-javadoc.jar
+	rm -f $(CURDIR)/debian/jrrd2/usr/share/java/*-sources.jar
+
+binary-indep: build install
+
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs
+	dh_installdocs
+	dh_installexamples
+	dh_install
+	dh_installman
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure
