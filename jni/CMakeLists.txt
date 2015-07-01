@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.8.9)
+cmake_minimum_required (VERSION 2.6.4)
 project (jrrd2)
 
 # JNI header name
@@ -11,6 +11,7 @@ set (CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/../dist")
 find_package(JNI REQUIRED)
 message (STATUS "JNI_INCLUDE_DIRS=${JNI_INCLUDE_DIRS}")
 message (STATUS "JNI_LIBRARIES=${JNI_LIBRARIES}")
+include_directories(${JNI_INCLUDE_DIRS})
 
 # librrd
 INCLUDE(FindPkgConfig)
@@ -18,11 +19,11 @@ pkg_check_modules (LIBRRD REQUIRED librrd>=1.4.0)
 message (STATUS "LIBRRD_LIBRARIES=${LIBRRD_LIBRARIES}")
 message (STATUS "LIBRRD_LIBRARY_DIRS=${LIBRRD_LIBRARY_DIRS}")
 if (NOT "${LIBRRD_LIBRARY_DIRS}" STREQUAL "")
-  link_directories("${LIBRRD_LIBRARY_DIRS}")
+  link_directories(${LIBRRD_LIBRARY_DIRS})
 endif()
 message (STATUS "LIBRRD_INCLUDE_DIRS=${LIBRRD_INCLUDE_DIRS}")
 if (NOT "${LIBRRD_INCLUDE_DIRS}" STREQUAL "")
-  include_directories("${LIBRRD_INCLUDE_DIRS}")
+  include_directories(${LIBRRD_INCLUDE_DIRS})
 endif()
 
 # Generic includes
@@ -40,6 +41,6 @@ IF(CMAKE_COMPILER_IS_GNUCC)
 ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
 # Build the shared library
-include_directories("${JNI_INCLUDE_DIRS}" "${CMAKE_CURRENT_SOURCE_DIR}/include")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
 add_library(jrrd2 MODULE src/rrd_jinterface.c)
 target_link_libraries(jrrd2 rrd_th)

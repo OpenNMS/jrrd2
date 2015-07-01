@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 if [ ! -e build.sh ]; then
   echo "build.sh must be ran from the root of the project."
