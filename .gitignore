@@ -1,3 +1,9 @@
+# Debian
+debian/*.log
+debian/files
+debian/jrrd2*
+debian/substvars
+
 # CMake
 CMakeCache.txt
 CMakeFiles

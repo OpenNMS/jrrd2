@@ -1,0 +1,15 @@
+Source: jrrd2
+Section: contrib/libs
+Priority: extra
+Maintainer: Benjamin Reed <ranger@opennms.org>
+Uploaders: Jeff Gehlbach <jeffg@opennms.org>
+	OpenNMS Build Account <opennms@opennms.org>
+Build-Depends: librrd-dev (>= 1.5.0), debhelper, cmake (>= 2.6.4), maven (>= 3.0), openjdk-7-jdk | openjdk-8-jdk | oracle-java7-installer | oracle-java8-installer | java7-sdk | java8-sdk
+Standards-Version: 3.8.4
+Homepage: http://github.com/OpenNMS/jrrd2
+
+Package: jrrd2
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, rrdtool (>= 1.5.0)
+Description: Java interface to RRDTool
+ A Java native interface (JNI) to RRDTool
