@@ -7,7 +7,7 @@
 %endif
 
 Name: jrrd2
-Version: 2.0.1
+Version: 2.0.2
 Release: 1
 License: GPL
 Group: Applications/Databases
