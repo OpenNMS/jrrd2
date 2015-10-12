@@ -39,7 +39,7 @@ import java.util.Map;
  * Used to store the results of a {@link org.opennms.netmgt.rrd.jrrd2.api.JRrd2#fetch}
  * or {@link org.opennms.netmgt.rrd.jrrd2.api.JRrd2#xport}.
  *
- * @author Jesse White <jesse@opennms.org>
+ * @author jwhite
  */
 public class FetchResults {
 

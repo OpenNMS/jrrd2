@@ -35,7 +35,7 @@ package org.opennms.netmgt.rrd.jrrd2.api;
 /**
  * Interface to librrd.
  *
- * @author Jesse White <jesse@opennms.org>
+ * @author jwhite
  * @version 2.0.0
  */
 public interface JRrd2 {

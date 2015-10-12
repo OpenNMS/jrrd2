@@ -35,7 +35,7 @@ package org.opennms.netmgt.rrd.jrrd2.api;
 /**
  * Generic exception.
  *
- * @author Jesse White <jesse@opennms.org>
+ * @author jwhite
  */
 public class JRrd2Exception extends Exception {
     private static final long serialVersionUID = -3040867952239972092L;

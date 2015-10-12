@@ -40,10 +40,10 @@ import org.slf4j.LoggerFactory;
 /**
  * A native interface to librrd.
  *
- * Use {@link org.opennms.netmgt.rrd.jrrd2.impl.JRrd2} instead of making
+ * Use org.opennms.netmgt.rrd.jrrd2.impl.JRrd2 instead of making
  * calls directly to this interface.
  *
- * @author Jesse White <jesse@opennms.org>
+ * @author jwhite
  * @version 2.0.0
  */
 public final class Interface {

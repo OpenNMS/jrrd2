@@ -42,7 +42,7 @@ import org.opennms.netmgt.rrd.jrrd2.api.JRrd2Exception;
  * This class automatically loads and initializes
  * the required system libraries.
  *
- * @author Jesse White <jesse@opennms.org>
+ * @author jwhite
  * @version 2.0.0
  */
 public class JRrd2Jni implements JRrd2 {
