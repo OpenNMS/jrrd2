@@ -33,7 +33,7 @@ function createPackage() {
       --version $VERSION \
       -t $TYPE \
       -C ./tmp/$TYPE \
-      -d "rrdtool" \
+      -d "rrdtool > 1.5.0" \
       -p ./dist $EXTRA_ARGUMENTS
 }
 
