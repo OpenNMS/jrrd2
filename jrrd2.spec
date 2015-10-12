@@ -16,7 +16,7 @@ Source: %{name}-%{version}.tar.gz
 Source1: apache-maven-3.2.5-bin.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 
-BuildRequires: cmake >= 2.6.4, rrdtool-devel >= 1.5.0, java7-sdk, gcc
+BuildRequires: cmake >= 2.6.4, rrdtool-devel >= 1.5.0, java-sdk-1.7.0, gcc
 
 %description
 A Java interface to the RRDTool round-robin database.
@@ -47,7 +47,7 @@ install -d -m 755 ${RPM_BUILD_ROOT}%{_libdir}
 install -c -m 755 dist/libjrrd2.so ${RPM_BUILD_ROOT}%{_libdir}/
 
 install -d -m 755 ${RPM_BUILD_ROOT}%{_datadir}/java
-install -c -m 644 dist/jrrd2-api-*.jar ${RPM_BUILD_ROOT}%{_datadir}/java/jrrd2.jar
+install -c -m 644 dist/jrrd2-api-%{version}.jar ${RPM_BUILD_ROOT}%{_datadir}/java/jrrd2.jar
 
 find $RPM_BUILD_ROOT%{_datadir}/java ! -type d | \
 	sed -e "s|^${RPM_BUILD_ROOT}|%attr(644,root,root) |" | \
