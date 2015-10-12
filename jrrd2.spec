@@ -47,7 +47,7 @@ install -d -m 755 ${RPM_BUILD_ROOT}%{_libdir}
 install -c -m 755 dist/libjrrd2.so ${RPM_BUILD_ROOT}%{_libdir}/
 
 install -d -m 755 ${RPM_BUILD_ROOT}%{_datadir}/java
-install -c -m 644 dist/*.jar ${RPM_BUILD_ROOT}%{_datadir}/java/
+install -c -m 644 dist/jrrd2-api-*.jar ${RPM_BUILD_ROOT}%{_datadir}/java/jrrd2.jar
 
 find $RPM_BUILD_ROOT%{_datadir}/java ! -type d | \
 	sed -e "s|^${RPM_BUILD_ROOT}|%attr(644,root,root) |" | \
