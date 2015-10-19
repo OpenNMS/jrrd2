@@ -16,7 +16,17 @@ Source: %{name}-%{version}.tar.gz
 Source1: apache-maven-3.2.5-bin.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 
-BuildRequires: cmake >= 2.6.4, rrdtool-devel >= 1.5.0, java-sdk-1.7.0, gcc
+BuildRequires: cmake >= 2.6.4
+BuildRequires: gcc
+BuildRequires: pkgconfig
+BuildRequires: rrdtool-devel >= 1.5.0
+
+%if 0%{?fedora} >= 21
+BuildRequires: java-1.8.0-openjdk-devel
+%else
+BuildRequires: java-1.7.0-openjdk-devel
+%endif
+
 
 %description
 A Java interface to the RRDTool round-robin database.
