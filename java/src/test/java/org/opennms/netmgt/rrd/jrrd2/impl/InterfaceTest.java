@@ -54,8 +54,15 @@ public class InterfaceTest {
 
     @BeforeClass
     public static void setUpClass() {
-        Path library = Paths.get(System.getProperty("user.dir"), "..", "dist", "libjrrd2.so");
-        System.setProperty("opennms.library.jrrd2", library.toString());
+        librarySearch: for (final String prefix : new String[] { "", "lib" }) {
+            for (final String suffix : new String[] { ".so", ".dll", ".jnilib" }) {
+                final Path library = Paths.get(System.getProperty("user.dir"), "..", "dist", prefix + "jrrd2" + suffix);
+                if (library.toFile().exists()) {
+                    System.setProperty("opennms.library.jrrd2", library.toString());
+                    break librarySearch;
+                }
+            }
+        }
         Interface.init();
     }
 

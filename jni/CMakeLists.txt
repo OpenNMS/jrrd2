@@ -43,4 +43,11 @@ ENDIF(CMAKE_COMPILER_IS_GNUCC)
 # Build the shared library
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
 add_library(jrrd2 MODULE src/rrd_jinterface.c)
+
+IF(APPLE)
+	SET_TARGET_PROPERTIES(jrrd2 PROPERTIES PREFIX "lib" SUFFIX ".jnilib")
+ELSEIF(WIN32)
+	SET_TARGET_PROPERTIES(jrrd2 PROPERTIES PREFIX "" SUFFIX ".dll")
+ENDIF(APPLE)
+
 target_link_libraries(jrrd2 rrd_th)
