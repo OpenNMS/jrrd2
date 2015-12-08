@@ -18,6 +18,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-root
 
 BuildRequires: cmake >= 2.6.4
 BuildRequires: gcc
+BuildRequires: gcc-c++
 BuildRequires: pkgconfig
 BuildRequires: rrdtool-devel >= 1.5.0
 
