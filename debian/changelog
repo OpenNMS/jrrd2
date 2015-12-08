@@ -1,3 +1,9 @@
+jrrd2 (2.0.3) stable; urgency=low
+
+  * Add better support for initializing the JNI shared library.
+
+ -- Benjamin Reed <ranger@opennms.org>  Tue, 08 Dec 2015 12:03:00 -0400
+
 jrrd2 (2.0.2) stable; urgency=low
 
   * Fix naming of jrrd2 jar.
