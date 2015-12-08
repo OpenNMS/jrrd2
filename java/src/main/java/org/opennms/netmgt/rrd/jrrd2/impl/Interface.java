@@ -32,6 +32,10 @@
  *******************************************************************************/
 package org.opennms.netmgt.rrd.jrrd2.impl;
 
+import java.io.File;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import org.opennms.netmgt.rrd.jrrd2.api.FetchResults;
 import org.opennms.netmgt.rrd.jrrd2.api.JRrd2Exception;
 import org.slf4j.Logger;
@@ -48,7 +52,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class Interface {
 
-	private static final Logger LOG = LoggerFactory.getLogger(Interface.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Interface.class);
 
     private static final String LIBRARY_NAME = "jrrd2";
 
@@ -79,15 +83,54 @@ public final class Interface {
             return;
         }
 
-        String property = System.getProperty(PROPERTY_NAME);
-        if (property != null) {
+        final String jniPath = System.getProperty(PROPERTY_NAME);
+        try {
             LOG.debug("System property '{}' set to '{}'. Attempting to load {} library from this location.", PROPERTY_NAME,  System.getProperty(PROPERTY_NAME), LIBRARY_NAME);
-            System.load(property);
-        } else {
-            LOG.debug("System property '{}' no set. Attempting to load library using System.loadLibrary(\"{}\").", PROPERTY_NAME, LIBRARY_NAME);
-            System.loadLibrary(LIBRARY_NAME);
+            System.load(jniPath);
+        } catch (final Throwable t) {
+            LOG.debug("System property '{}' not set or failed loading. Attempting to find library.", PROPERTY_NAME, LIBRARY_NAME);
+            loadLibrary();
         }
         LOG.info("Successfully loaded {} library.", LIBRARY_NAME);
+    }
+
+    private static void loadLibrary() {
+        final Set<String> searchPaths = new LinkedHashSet<String>();
+
+        if (System.getProperty("java.library.path") != null) {
+            for (final String entry : System.getProperty("java.library.path").split(File.pathSeparator)) {
+                searchPaths.add(entry);
+            }
+        }
+
+        for (final String entry : new String[] {
+                "/usr/lib64/jni",
+                "/usr/lib64",
+                "/usr/local/lib64",
+                "/usr/lib/jni",
+                "/usr/lib",
+                "/usr/local/lib"
+        }) {
+            searchPaths.add(entry);
+        }
+
+        for (final String path : searchPaths) {
+            for (final String prefix : new String[] { "", "lib" }) {
+                for (final String suffix : new String[] { ".jnilib", ".dylib", ".so" }) {
+                    final File f = new File(path + File.separator + prefix + LIBRARY_NAME + suffix);
+                    if (f.exists()) {
+                        try {
+                            System.load(f.getCanonicalPath());
+                            return;
+                        } catch (final Throwable t) {
+                            LOG.trace("Failed to load {} from file {}", LIBRARY_NAME, f, t);
+                        }
+                    }
+                }
+            }
+        }
+        LOG.debug("Unable to locate '{}' in common paths.  Attempting System.loadLibrary() as a last resort.", LIBRARY_NAME);
+        System.loadLibrary(LIBRARY_NAME);
     }
 
     public static synchronized void reload() throws SecurityException, UnsatisfiedLinkError {
