@@ -32,9 +32,10 @@ install: build
 	install -d -m 755 $(CURDIR)/debian/jrrd2/usr/lib/jni
 	install -d -m 755 $(CURDIR)/debian/jrrd2/usr/share/java
 	install -c -m 755 dist/libjrrd2.so $(CURDIR)/debian/jrrd2/usr/lib/jni/
-	install -c -m 644 dist/jrrd2-api-*.jar $(CURDIR)/debian/jrrd2/usr/share/java/jrrd2.jar
+	install -c -m 644 dist/jrrd2-api-*.jar $(CURDIR)/debian/jrrd2/usr/share/java/
 	rm -f $(CURDIR)/debian/jrrd2/usr/share/java/*-javadoc.jar
 	rm -f $(CURDIR)/debian/jrrd2/usr/share/java/*-sources.jar
+	mv $(CURDIR)/debian/jrrd2/usr/share/java/jrrd2-api-*.jar $(CURDIR)/debian/jrrd2/usr/share/java/jrrd2.jar
 
 binary-indep: build install
 
