@@ -8,6 +8,7 @@
 
 Name: jrrd2
 Version: 2.0.4
+Epoch: 1
 Release: 1%{?dist}
 License: GPL
 Group: Applications/Databases
