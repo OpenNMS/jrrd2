@@ -7,7 +7,7 @@
 %endif
 
 Name: jrrd2
-Version: 2.0.4
+Version: 2.0.5
 Epoch: 1
 Release: 1%{?dist}
 License: GPL
