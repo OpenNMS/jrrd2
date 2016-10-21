@@ -48,7 +48,7 @@ import org.opennms.netmgt.rrd.jrrd2.api.JRrd2Exception;
 public class JRrd2Jni implements JRrd2 {
 
     /* A suggested by http://linux.die.net/man/1/rrdthreads:
-     *   Every thread SHOULD call "rrd_get_context()" before its first call to any "librrd_th" function
+     *   Every thread SHOULD call "rrd_get_context()" before its first call to any "librrd" function
      */
     private static final ThreadLocal<Void> rrdContext =
         new ThreadLocal<Void>() {

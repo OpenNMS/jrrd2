@@ -21,7 +21,7 @@ BuildRequires: cmake >= 2.6.4
 BuildRequires: gcc
 BuildRequires: gcc-c++
 BuildRequires: pkgconfig
-BuildRequires: rrdtool-devel >= 1.5.0
+BuildRequires: rrdtool-devel >= 1.6.0
 
 %if 0%{?fedora} >= 21
 BuildRequires: java-1.8.0-openjdk-devel
