@@ -61,7 +61,7 @@ install -c -m 755 dist/libjrrd2.so ${RPM_BUILD_ROOT}%{_libdir}/
 install -d -m 755 ${RPM_BUILD_ROOT}%{_datadir}/java
 install -c -m 644 dist/jrrd2-api-%{version}.jar ${RPM_BUILD_ROOT}%{_datadir}/java/jrrd2.jar
 
-install -d -m 655 ${RPM_BUILD_ROOT}%{_datadir}/javadoc/%{name}
+install -d -m 755 ${RPM_BUILD_ROOT}%{_datadir}/javadoc/%{name}
 unzip -d ${RPM_BUILD_ROOT}%{_datadir}/javadoc/%{name} dist/jrrd2*javadoc*.jar
 
 install -c -m 644 dist/jrrd2*-sources*.jar ${RPM_BUILD_ROOT}%{_datadir}/java/jrrd2-sources.jar
