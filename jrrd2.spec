@@ -6,6 +6,8 @@
 %{!?_libdir: %define _libdir %_prefix/lib64}
 %endif
 
+%global debug_package %{nil}
+
 Name: jrrd2
 Version: 2.0.5
 Epoch: 1
