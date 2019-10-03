@@ -7,6 +7,7 @@
 %endif
 
 %global debug_package %{nil}
+%{!?jdk_dev_dep:%define jdk_dev_dep java-1.8.0-openjdk-devel}
 
 Name: jrrd2
 Version: 2.0.5
@@ -24,12 +25,7 @@ BuildRequires: gcc
 BuildRequires: gcc-c++
 BuildRequires: pkgconfig
 BuildRequires: rrdtool-devel >= 1.6.0
-
-%if 0%{?fedora} >= 21
-BuildRequires: java-1.8.0-openjdk-devel
-%else
-BuildRequires: java-1.7.0-openjdk-devel
-%endif
+BuildRequires: %{jdk_dev_dep}
 
 
 %description
@@ -49,10 +45,12 @@ Javadoc and Java source for JRRD2
 
 %build
 MYDIR=`pwd`
-if [ -d /usr/lib/jvm/java-1.7.0 ]; then
-	export JAVA_HOME="/usr/lib/jvm/java-1.7.0"
-	export PATH="$JAVA_HOME/bin:$PATH"
-fi
+for VER in 1.8.0 1.7.0; do
+	if [ -d "/usr/lib/jvm/java-$VER" ]; then
+		export JAVA_HOME="/usr/lib/jvm/java-$VER"
+		export PATH="$JAVA_HOME/bin:$PATH"
+	fi
+done
 export PATH="$MYDIR/apache-maven-3.2.5/bin:$PATH"
 ./build.sh || exit 1
 
