@@ -4,6 +4,8 @@ BUILD="1"
 JAR="./dist/jrrd2-api-$VERSION.jar"
 LIB="./dist/libjrrd2.so"
 
+set -e
+
 if [ ! -e build-packages.sh ]; then
   echo "build-packages.sh must be ran from the root of the project."
 fi
