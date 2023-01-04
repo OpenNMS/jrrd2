@@ -4,23 +4,23 @@ BUILD="1"
 JAR="./dist/jrrd2-api-$VERSION.jar"
 LIB="./dist/libjrrd2.so"
 
-set -e
-
 if [ ! -e build-packages.sh ]; then
   echo "build-packages.sh must be ran from the root of the project."
 fi
-
-# Cleanup
-rm -f ./dist/*.rpm
-rm -f ./dist/*.deb
-rm -rf ./tmp && mkdir ./tmp
-mkdir -p ./dist
 
 # Make sure fpm is installed before proceeding
 which fpm >/dev/null
 if [ $? -ne 0 ]; then
   echo "The fpm command is not available. See https://github.com/jordansissel/fpm for installation instructions."
 fi
+
+set -e
+
+# Cleanup
+rm -f ./dist/*.rpm
+rm -f ./dist/*.deb
+rm -rf ./tmp && mkdir ./tmp
+mkdir -p ./dist
 
 function createPackage() {
   TYPE="$1"
