@@ -19,11 +19,13 @@ fi
 
 set -e
 
-for DIR in /usr/lib/jvm/*1.8* /usr/lib/jvm/java-7-openjdk-*; do
-	if [ -d "$DIR" ] && [ -x "$DIR"/bin/javac ]; then
-		export JAVA_HOME="$DIR"
-	fi
-done
+if [ -z "${JAVA_HOME}" ]; then
+	for DIR in /usr/lib/jvm/*1.8* /usr/lib/jvm/java-7-openjdk-*; do
+		if [ -d "$DIR" ] && [ -x "$DIR"/bin/javac ]; then
+			export JAVA_HOME="$DIR"
+		fi
+	done
+fi
 export PATH="$JAVA_HOME/bin:$PATH"
 
 # Cleanup
@@ -33,9 +35,14 @@ pushd . && rm -rf build dist && mkdir build
 cd ./java
 mvn clean compile
 
+declare -a CMAKE_ARGS=()
+if [ -n "${CMAKE_OSX_ARCHITECTURES}" ]; then
+	CMAKE_ARGS+=("-DCMAKE_OSX_ARCHITECTURES=${CMAKE_OSX_ARCHITECTURES}")
+fi
+
 # Build the shared library
 cd ../build
-cmake ../jni/
+cmake "${CMAKE_ARGS[@]}" ../jni/
 make
 
 # Run the tests and create the .jar
