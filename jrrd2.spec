@@ -10,7 +10,7 @@
 %{!?jdk_dev_dep:%define jdk_dev_dep java-1.8.0-openjdk-devel}
 
 Name: jrrd2
-Version: 2.0.6
+Version: 2.0.7
 Epoch: 1
 Release: 1%{?dist}
 License: GPL
