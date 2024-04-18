@@ -1,0 +1,79 @@
+---
+name: jrrd2-build
+run-name: Build JRRD2
+on:
+  push:
+
+## Build and create the project on every push to the project
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: quay.io/bluebird/java-builder:0.0.3.jdk-17
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set environment variable
+        run: echo "BUILD_NUMBER=${{ github.run_number }}" >> $GITHUB_ENV
+      - name: Add workspace to git safe.directory
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - name: Build from source
+        run: make
+      - name: Persist jrrd2 artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: jrrd2
+          path: dist
+
+  deb-packages:
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    container:
+      image: quay.io/bluebird/java-builder:0.0.3.jdk-17
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set environment variable
+        run: echo "BUILD_NUMBER=${{ github.run_number }}" >> $GITHUB_ENV
+      - name: Add workspace to git safe.directory
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - name: Build DEB packages
+        run: make BUILD_NUMBER=${{ env.BUILD_NUMBER }} deb-pkg
+      - name: Persist jrrd2 Debian package artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: jrrd2-deb-pkg
+          path: dist/*.deb
+      - name: Publish Debian packages to Cloudsmith
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        run: |
+          export CLOUDSMITH_API_KEY=${{ secrets.CLOUDSMITH_API_KEY }}
+          for deb in $(ls dist/*.deb); do
+            cloudsmith push deb bluebird/common/any-distro/any-version ${deb};
+          done;
+
+  rpm-packages:
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    container:
+      image: quay.io/bluebird/java-builder:0.0.3.jdk-17
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set environment variable
+        run: echo "BUILD_NUMBER=${{ github.run_number }}" >> $GITHUB_ENV
+      - name: Build RPM packages
+        run: make BUILD_NUMBER=${{ env.BUILD_NUMBER }} rpm-pkg
+      - name: Persist jrrd2 RPM package artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: jrrd2-rpm-pkg
+          path: dist/*.rpm
+      - name: Publish RPM packages to Cloudsmith
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        run: |
+          export CLOUDSMITH_API_KEY=${{ secrets.CLOUDSMITH_API_KEY }}
+          for rpm in $(ls dist/*.rpm); do
+            cloudsmith push rpm bluebird/common/any-distro/any-version ${rpm};
+          done;
