@@ -32,3 +32,17 @@ Requirements:
 make deb-pkg rpm-pkg
 ```
 The dist/ folder should now contain both .deb and .rpm packages.
+
+## 🛳️ Release
+
+```bash
+make release RELEASE_VERSION=x.y.z
+```
+
+This will create a git tag `vX.Y.Z`
+The tag and new version isn't pushed and just local.
+
+```bash
+git push               # Push new SNAPSHOT version to main branch
+git push origin vX.Y.Z # Push the new version tag
+```
