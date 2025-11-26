@@ -59,6 +59,8 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Normalize owner to lowercase
+        run: echo "OWNER_LC=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
       - name: Build and push container image
         if: github.ref == 'refs/heads/master'
         uses: docker/build-push-action@v6
@@ -66,4 +68,4 @@ jobs:
           context: ./oci-build-env
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/${{ env.OCI_TAG }}.${{ env.SHORT_GIT_SHA }},ghcr.io/${{ github.repository_owner }}/jrrd2-builder:latest
+          tags: ghcr.io/${{ env.OWNER_LC }}/${{ env.OCI_TAG }}.${{ env.SHORT_GIT_SHA }},ghcr.io/${{ env.OWNER_LC }}/jrrd2-builder:latest
