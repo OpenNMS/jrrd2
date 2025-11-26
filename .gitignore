@@ -7,9 +7,10 @@ debian/substvars
 # CMake
 CMakeCache.txt
 CMakeFiles
-Makefile
+build/Makefile
 cmake_install.cmake
 install_manifest.txt
+.cache/
 
 # Build/target folders
 build/
@@ -27,3 +28,4 @@ jni/include/jrrd2_java_interface.h
 .classpath
 .project
 java/bin/
+

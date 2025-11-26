@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.6.4)
+cmake_minimum_required (VERSION 3.10.0)
 project (jrrd2)
 
 # JNI header name
@@ -44,10 +44,8 @@ ENDIF(CMAKE_COMPILER_IS_GNUCC)
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
 add_library(jrrd2 MODULE src/rrd_jinterface.c)
 
-IF(APPLE)
-	SET_TARGET_PROPERTIES(jrrd2 PROPERTIES PREFIX "lib" SUFFIX ".jnilib" INSTALL_NAME_DIR "/usr/local/lib")
-ELSEIF(WIN32)
+IF(WIN32)
 	SET_TARGET_PROPERTIES(jrrd2 PROPERTIES PREFIX "" SUFFIX ".dll")
-ENDIF(APPLE)
+ENDIF(WIN32)
 
 target_link_libraries(jrrd2 rrd)

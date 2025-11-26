@@ -1,0 +1,67 @@
+---
+name: jrrd2-build
+run-name: Build JRRD2
+on:
+  workflow_dispatch:
+  push:
+
+## Build and create the project on every push to the project
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/${{ github.repository_owner }}/jrrd2-builder:0.0.1.12a3318
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set environment variable
+        run: echo "BUILD_NUMBER=${{ github.run_number }}" >> $GITHUB_ENV
+      - name: Add workspace to git safe.directory
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - name: Build from source
+        run: make
+      - name: Persist jrrd2 artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: jrrd2
+          path: dist
+
+  deb-packages:
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/${{ github.repository_owner }}/jrrd2-builder:0.0.1.12a3318
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set environment variable
+        run: echo "BUILD_NUMBER=${{ github.run_number }}" >> $GITHUB_ENV
+      - name: Add workspace to git safe.directory
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - name: Build DEB packages
+        run: make BUILD_NUMBER=${{ env.BUILD_NUMBER }} deb-pkg
+      - name: Persist jrrd2 Debian package artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: jrrd2-deb-pkg
+          path: dist/*.deb
+
+  rpm-packages:
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/${{ github.repository_owner }}/jrrd2-builder:0.0.1.12a3318
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set environment variable
+        run: echo "BUILD_NUMBER=${{ github.run_number }}" >> $GITHUB_ENV
+      - name: Add workspace to git safe.directory
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - name: Build RPM packages
+        run: make BUILD_NUMBER=${{ env.BUILD_NUMBER }} rpm-pkg
+      - name: Persist jrrd2 RPM package artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: jrrd2-rpm-pkg
+          path: dist/*.rpm
+
