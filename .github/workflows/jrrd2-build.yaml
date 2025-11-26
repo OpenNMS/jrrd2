@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/${{ github.repository_owner }}/jrrd2-builder:0.0.1.12a3318
+      image: ghcr.io/opennms/jrrd2-builder:0.0.1.12a3318
     steps:
       - uses: actions/checkout@v4
       - name: Set environment variable
@@ -30,7 +30,7 @@ jobs:
       - build
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/${{ github.repository_owner }}/jrrd2-builder:0.0.1.12a3318
+      image: ghcr.io/opennms/jrrd2-builder:0.0.1.12a3318
     steps:
       - uses: actions/checkout@v4
       - name: Set environment variable
@@ -50,7 +50,7 @@ jobs:
       - build
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/${{ github.repository_owner }}/jrrd2-builder:0.0.1.12a3318
+      image: ghcr.io/opennms/jrrd2-builder:0.0.1.12a3318
     steps:
       - uses: actions/checkout@v4
       - name: Set environment variable
