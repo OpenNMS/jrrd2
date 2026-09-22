@@ -10,7 +10,7 @@ BUILD_NUMBER        ?= 0
 
 GIT_BRANCH          := $(shell git branch --show-current)
 RELEASE_VERSION     := UNSET.0.0
-RELEASE_BRANCH      := main
+RELEASE_BRANCH      := master
 MAJOR_VERSION       := $(shell echo $(RELEASE_VERSION) | cut -d. -f1)
 MINOR_VERSION       := $(shell echo $(RELEASE_VERSION) | cut -d. -f2)
 PATCH_VERSION       := $(shell echo $(RELEASE_VERSION) | cut -d. -f3)
