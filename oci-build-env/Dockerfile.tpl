@@ -22,7 +22,7 @@ RUN apt-get update && \
         python3-pip \
         rpm \
         ruby && \
-    curl "https://dlcdn.apache.org/maven/maven-${MAVEN_MAIN_VERSION}/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz" -o /tmp/maven.tar.gz && \
+    curl -f "https://archive.apache.org/dist/maven/maven-${MAVEN_MAIN_VERSION}/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz" -o /tmp/maven.tar.gz && \
     gem install "fpm:${FPM_VERSION}" && \
     # I got the failure "error: externally-managed-environment" pip install cloudsmith-cli
     # The only way I got it working without digging into the details of venv with Docker running with other user contexts was using
