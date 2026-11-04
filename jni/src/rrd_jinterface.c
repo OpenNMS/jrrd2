@@ -196,6 +196,7 @@ static inline jobjectArray rrd_values_to_matrix(JNIEnv *env, Classes *classes, r
 
 		(*env)->SetDoubleArrayRegion(env, column_store, 0, rows, column);
 		(*env)->SetObjectArrayElement(env, matrix, i, column_store);
+		(*env)->DeleteLocalRef(env, column_store);
 	}
 	free(column);
 
