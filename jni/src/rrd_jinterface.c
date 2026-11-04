@@ -175,18 +175,18 @@ static inline jobjectArray rrd_values_to_matrix(JNIEnv *env, Classes *classes, r
 		return NULL;
 	}
 
+	jdouble *column = (jdouble *) malloc(rows * sizeof(jdouble));
+	if (column == NULL && rows > 0) {
+		(*env)->ThrowNew(env, classes->outOfMemoryError, "failed to allocate memory for the column values");
+		return NULL;
+	}
+
 	int i, j;
 	for (i = 0; i < columns; i++) {
 		jdoubleArray column_store = (*env)->NewDoubleArray(env, rows);
 		if (column_store == NULL) {
+			free(column);
 			(*env)->ThrowNew(env, classes->outOfMemoryError, "failed to allocate memory for double array");
-			return NULL;
-		}
-
-
-		jdouble *column = (jdouble *) malloc(rows * sizeof(jdouble));
-		if (column == NULL) {
-			(*env)->ThrowNew(env, classes->outOfMemoryError, "failed to allocate memory for the column values");
 			return NULL;
 		}
 
@@ -195,10 +195,9 @@ static inline jobjectArray rrd_values_to_matrix(JNIEnv *env, Classes *classes, r
 		}
 
 		(*env)->SetDoubleArrayRegion(env, column_store, 0, rows, column);
-		free(column);
-
 		(*env)->SetObjectArrayElement(env, matrix, i, column_store);
 	}
+	free(column);
 
 	return matrix;
 }
@@ -407,7 +406,7 @@ JNIEXPORT jobject JNICALL Java_org_opennms_netmgt_rrd_jrrd2_impl_Interface_rrd_1
 	}
 
 	const char *n_cf = (*env)->GetStringUTFChars(env, cf, 0);
-	if (n_filename == NULL) {
+	if (n_cf == NULL) {
 		(*env)->ReleaseStringUTFChars(env, filename, n_filename);
 		return NULL; // OutOfMemoryError already thrown
 	}
@@ -461,7 +460,6 @@ JNIEXPORT jobject JNICALL Java_org_opennms_netmgt_rrd_jrrd2_impl_Interface_rrd_1
 	// Gather the values
 	jobjectArray result_columns = rrd_values_to_matrix(env, &classes, n_data, col_cnt, (int)row_cnt);
 	if (result_columns == NULL) {
-		(*env)->ThrowNew(env, classes.outOfMemoryError, "failed to allocate memory for result matrix");
 		goto theend;
 	}
 
@@ -560,7 +558,6 @@ JNIEXPORT jobject JNICALL Java_org_opennms_netmgt_rrd_jrrd2_impl_Interface_rrd_1
 	// Build the list of values
 	jobjectArray result_columns = rrd_values_to_matrix(env, &classes, n_data, col_cnt, row_cnt);
 	if (result_columns == NULL) {
-		(*env)->ThrowNew(env, classes.outOfMemoryError, "failed to allocate memory for result matrix");
 		goto theend;
 	}
 
